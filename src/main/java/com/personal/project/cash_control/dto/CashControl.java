@@ -1,5 +1,7 @@
 package com.personal.project.cash_control.dto;
 
-public record CashControl(Long id, Double amount ) {
+import org.springframework.data.annotation.Id;
+
+public record CashControl(@Id Long id, Double amount ) {
 
 }
