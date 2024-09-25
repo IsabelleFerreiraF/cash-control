@@ -1,12 +1,16 @@
 package com.personal.project.cash_control.controller;
 
+import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.personal.project.cash_control.dto.CashControl;
 import com.personal.project.cash_control.repository.CashCardRepository;
@@ -40,5 +44,14 @@ public class CashCardController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    
+    @PostMapping
+    private ResponseEntity<Void> createCashControl(@RequestBody CashControl newCashControl, UriComponentsBuilder ucb){
+    	CashControl savedCashCard = cashCardRepository.save(newCashControl);
+        URI locationOfNewCashCard = ucb.path("cashcards/{id}")
+        .buildAndExpand(savedCashCard.id()).toUri();
+        return ResponseEntity.created(locationOfNewCashCard).build();
+    
     }
 }
